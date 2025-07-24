@@ -93,7 +93,11 @@ download_singbox(){
   case ${arch} in
       x86_64) arch="amd64" ;; aarch64) arch="arm64" ;; armv7l) arch="armv7" ;;
   esac
-  latest_version_tag=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | grep -Po '"tag_name": "\K.*?(?=")' | sort -V | tail -n 1)
+  # --- FINAL FIX: Hardcode a known good version that supports "sockopt" ---
+  # latest_version_tag=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases" | grep -Po '"tag_name": "\K.*?(?=")' | sort -V | tail -n 1)
+  latest_version_tag="v1.9.2" # We need a version >= 1.9.0 for sockopt support. Let's use a recent stable one.
+  # --- END OF FIX ---
+  
   latest_version=${latest_version_tag#v}
   echo "Downloading Sing-box v$latest_version for $arch..."
   package_name="sing-box-${latest_version}-linux-${arch}"
